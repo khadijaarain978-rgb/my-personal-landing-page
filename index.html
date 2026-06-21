@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basecom - AI Landing Page</title>
+    <!-- Google Fonts for clean typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Base Reset & Variables */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        :root {
+            --bg-color: #050209;
+            --purple-glow: rgba(139, 92, 246, 0.15);
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
+            --accent-purple: #8b5cf6;
+            --accent-purple-light: #a78bfa;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Ambient Purple Glow Background */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 1200px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(168, 85, 247, 0.15) 0%, rgba(5, 2, 9, 0) 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Container styling */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header / Navbar */
+        header {
+            padding: 24px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-main);
+            text-decoration: none;
+        }
+
+        .logo svg {
+            fill: var(--accent-purple-light);
+        }
+
+        nav {
+            display: flex;
+            gap: 32px;
+        }
+
+        nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--text-main);
+        }
+
+        .btn-waitlist {
+            background: linear-gradient(135deg, var(--accent-purple), #6d28d9);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 9999px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+        }
+
+        .btn-waitlist:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.5);
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 80px 0 60px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Floating Badge */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 6px 16px;
+            border-radius: 9999px;
+            font-size: 13px;
+            color: #e2e8f0;
+            margin-bottom: 32px;
+            text-decoration: none;
+            transition: background 0.3s ease;
+            opacity: 0;
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: 0.2s;
+        }
+
+        .badge:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .badge-new {
+            background: var(--accent-purple);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 9999px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        /* Main Heading with Gradient */
+        .hero h1 {
+            font-size: clamp(40px, 6vw, 68px);
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            max-width: 800px;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, #ffffff 40%, #c084fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0;
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: 0.4s;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: var(--text-muted);
+            max-width: 600px;
+            line-height: 1.6;
+            margin-bottom: 40px;
+            opacity: 0;
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: 0.6s;
+        }
+
+        /* Action Buttons */
+        .cta-group {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 80px;
+            opacity: 0;
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: 0.8s;
+        }
+
+        .btn-primary {
+            background-color: var(--text-main);
+            color: var(--bg-color);
+            padding: 14px 28px;
+            border-radius: 9999px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: opacity 0.2s, transform 0.2s;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-main);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 14px 28px;
+            border-radius: 9999px;
+            font-weight: 600;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.2s, transform 0.2s;
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            transform: translateY(-2px);
+        }
+
+        /* Stats & Cards Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            width: 100%;
+            max-width: 1000px;
+            align-items: center;
+            margin-bottom: 60px;
+            opacity: 0;
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation-delay: 1s;
+        }
+
+        /* Left Side Stats */
+        .stats-container {
+            display: flex;
+            gap: 40px;
+            text-align: left;
+        }
+
+        .stat-item h3 {
+            font-size: 36px;
+            font-weight: 700;
+        }
+
+        .stat-item p {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        /* Right Side Card */
+        .card-container {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .ai-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            max-width: 280px;
+            backdrop-filter: blur(8px);
+        }
+
+        .card-icon {
+            background: rgba(139, 92, 246, 0.2);
+            border-radius: 12px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-info h4 {
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .card-info p {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 4px;
+            line-height: 1.4;
+        }
+
+        /* Bottom Logo Ticker/Slider */
+        .ticker-section {
+            width: 100%;
+            overflow: hidden;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 30px 0;
+            background: rgba(5, 2, 9, 0.8);
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+            animation-delay: 1.2s;
+        }
+
+        .ticker-wrapper {
+            display: flex;
+            width: max-content;
+            animation: ticker 25s linear infinite;
+        }
+
+        .ticker-content {
+            display: flex;
+            align-items: center;
+            gap: 60px;
+            padding-right: 60px;
+        }
+
+        .ticker-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-muted);
+            font-size: 18px;
+            font-weight: 600;
+            opacity: 0.6;
+            transition: opacity 0.3s;
+        }
+
+        .ticker-item:hover {
+            opacity: 1;
+        }
+
+        .separator {
+            color: rgba(255, 255, 255, 0.2);
+            font-size: 20px;
+        }
+
+        /* Keyframes Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes ticker {
+            0% {
+                transform: translate3d(0, 0, 0);
+            }
+            100% {
+                transform: translate3d(-50%, 0, 0);
+            }
+        }
+
+        /* Responsive Settings */
+        @media (max-width: 768px) {
+            nav {
+                display: none; /* Mobile menu can be added as needed */
+            }
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                text-align: center;
+            }
+            .stats-container {
+                justify-content: center;
+            }
+            .card-container {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Navigation Bar -->
+        <header>
+            <a href="#" class="logo">
+                <!-- Simple Logo Icon -->
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="3" y="10" width="4" height="11" rx="2" fill="currentColor"/>
+                    <rect x="10" y="3" width="4" height="18" rx="2" fill="currentColor"/>
+                    <rect x="17" y="8" width="4" height="13" rx="2" fill="currentColor"/>
+                </svg>
+                Basecom
+            </a>
+            <nav>
+                <a href="#home">Home</a>
+                <a href="#features">Features</a>
+                <a href="#work">How we work</a>
+                <a href="#pricing">Pricing</a>
+                <a href="#faqs">FAQs</a>
+            </nav>
+            <a href="#" class="btn-waitlist">Join Waitlist</a>
+        </header>
+
+        <!-- Main Hero Section -->
+        <main class="hero">
+            <a href="#" class="badge">
+                <span class="badge-new">New</span>
+                Download the new iOS app <span>&rarr;</span>
+            </a>
+
+            <h1>How AI is Redefining Business Success.</h1>
+            <p>Harness the power of AI to optimize every facet of your business. Our suite of services is designed to help optimize every facet of your workflow.</p>
+
+            <div class="cta-group">
+                <a href="#" class="btn-primary">Start for Free</a>
+                <a href="#" class="btn-secondary">
+                    <!-- Play icon SVG -->
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                    See How it works
+                </a>
+            </div>
+
+            <!-- Features, Stats and Card Grid -->
+            <div class="features-grid">
+                <!-- Left stats -->
+                <div class="stats-container">
+                    <div class="stat-item">
+                        <h3>4.9+</h3>
+                        <p>Stars rating</p>
+                    </div>
+                    <div class="stat-item">
+                        <h3>20k+</h3>
+                        <p>Satisfied customers</p>
+                    </div>
+                </div>
+
+                <!-- Right Card -->
+                <div class="card-container">
+                    <div class="ai-card">
+                        <div class="card-icon">
+                            <!-- Crown Icon SVG -->
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2">
+                                <path d="M2 4l3 12h14l3-12-6 7-4-7-4 7-6-7z"/>
+                                <path d="M3 20h18" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                        <div class="card-info">
+                            <h4>Best AI Tools</h4>
+                            <p>Harness the power of AI to optimize every beat of your business.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Bottom Logo Ticker / Continuous Slider -->
+    <div class="ticker-section">
+        <div class="ticker-wrapper">
+            <!-- First group for infinite effect -->
+            <div class="ticker-content">
+                <div class="ticker-item">Linear</div>
+                <div class="separator">&#10022;</div>
+                <div class="ticker-item">Medium</div>
+                <div class="separator">&#10022;</div>
+                <div class="ticker-item">Mailchimp</div>
+                <div class="separator">&#10022;</div>
+                <div class="ticker-item">Square</div>
+                <div class="separator">&#10022;</div>
+                <div class="ticker-item">Dropbox</div>
+                <div class="separator">&#10022;</div>
+            </div>
+            <!-- Second duplicated group to make the transition seamless -->
+            <div class="ticker-content">
+                <div class="ticker-item">Linear</div>
+                <div class="separator">&#10022;</div>
+                <div class="ticker-item">Medium</div>
+                <div class="separator">&#10022;</div>
+                <div class="ticker-item">Mailchimp</div>
+                <div class="separator">&#10022;</div>
+                <div class="ticker-item">Square</div>
+                <div class="separator">&#10022;</div>
+                <div class="ticker-item">Dropbox</div>
+                <div class="separator">&#10022;</div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
